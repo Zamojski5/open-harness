@@ -1,0 +1,132 @@
+{
+  "schema": "open-herness.scene-plan/1",
+  "source": {
+    "clip": "Ron Lach, desk recording (Pexels)",
+    "page": "https://www.pexels.com/video/a-man-trying-to-remove-a-barricade-tape-9831125/",
+    "download": "https://videos.pexels.com/video-files/9831125/9831125-hd_2048_1080_25fps.mp4",
+    "license": "Pexels license https://www.pexels.com/license/",
+    "trim": "4.6 s starting at source 3.4 s (skips the opening far-arm occlusion)",
+    "notes": "Seated throughout: torso supported by the seat, feet fixed, arm reach captured."
+  },
+  "source_sha256": "93fba64d926dc54104ae5e85bd7d6fc27f883ae079c77f2cdadfab738ea1dd20",
+  "source_yaw_degrees": 81.6707,
+  "smoothing": {
+    "sigma_seconds": 0.08,
+    "pole_sigma_seconds": 0.14
+  },
+  "smooth_authored_paths": true,
+  "lean_limit_degrees": 45,
+  "root": [
+    {
+      "time": 0,
+      "position": [0, 0, -0.5]
+    },
+    {
+      "time": 4.6,
+      "position": [0, 0, -0.5]
+    }
+  ],
+  "props": [
+    {
+      "name": "ChairSeat",
+      "position": [0, 0, 0.47],
+      "size": [0.52, 0.5, 0.07]
+    },
+    {
+      "name": "ChairBack",
+      "position": [0, 0.25, 0.8],
+      "size": [0.52, 0.06, 0.65]
+    },
+    {
+      "name": "Table",
+      "position": [0, -0.7, 0.78],
+      "size": [1.1, 0.6, 0.08]
+    },
+    {
+      "name": "ChairLeg3",
+      "position": [-0.22, -0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg4",
+      "position": [0.22, -0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg5",
+      "position": [-0.22, 0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg6",
+      "position": [0.22, 0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "TableLeg7",
+      "position": [-0.47, -0.92, 0.37],
+      "size": [0.055, 0.055, 0.74]
+    },
+    {
+      "name": "TableLeg8",
+      "position": [0.47, -0.92, 0.37],
+      "size": [0.055, 0.055, 0.74]
+    },
+    {
+      "name": "TableLeg9",
+      "position": [-0.47, -0.48, 0.37],
+      "size": [0.055, 0.055, 0.74]
+    },
+    {
+      "name": "TableLeg10",
+      "position": [0.47, -0.48, 0.37],
+      "size": [0.055, 0.055, 0.74]
+    }
+  ],
+  "contacts": [
+    {
+      "bone": "torso",
+      "object": "ChairSeat",
+      "position": [0, 0.0362, 0.1136],
+      "start": 0,
+      "end": 4.6,
+      "blend": 0.1
+    }
+  ],
+  "overrides": [
+    {
+      "bone": "foot_ik.L",
+      "keys": [
+        {
+          "time": 0,
+          "position": [0.13, -0.38, 0.0852]
+        },
+        {
+          "time": 4.6,
+          "position": [0.13, -0.38, 0.0852]
+        }
+      ]
+    },
+    {
+      "bone": "foot_ik.R",
+      "keys": [
+        {
+          "time": 0,
+          "position": [-0.13, -0.38, 0.0852]
+        },
+        {
+          "time": 4.6,
+          "position": [-0.13, -0.38, 0.0852]
+        }
+      ]
+    }
+  ],
+  "reviewed_occlusions": [
+    {
+      "start": 0,
+      "end": 4.6,
+      "joints": [23, 24, 25, 26, 27, 28],
+      "reason": "Legs are cropped while seated, so seat support and the foot pose are authored. The visible arm reach and pull come from capture; the tape, fingers and exact hand-on-surface contact are not reconstructed."
+    }
+  ]
+}

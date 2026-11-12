@@ -1,0 +1,44 @@
+{
+  "name": "@open-herness/creative-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open Herness creative tools for agents (Blender first) as an MCP stdio server.",
+  "bin": {
+    "open-herness-creative-mcp": "./src/server.ts"
+  },
+  "type": "module",
+  "exports": {
+    "./goal-state": {
+      "types": "./src/goal/state.ts",
+      "import": "./src/goal/state.ts"
+    },
+    "./spill": {
+      "types": "./src/spill.ts",
+      "import": "./src/spill.ts"
+    },
+    "./capwords": {
+      "types": "./src/media/capwords.ts",
+      "import": "./src/media/capwords.ts"
+    },
+    "./imageFit": {
+      "types": "./src/imageFit.ts",
+      "import": "./src/imageFit.ts"
+    }
+  },
+  "scripts": {
+    "start": "node src/server.ts",
+    "figma:smoke": "node src/figma/smoke.ts",
+    "typecheck": "effect-tsgo tsrs --noEmit -p tsconfig.json",
+    "test": "vp test run --config ../../vite.config.ts --dir test && node --test src/"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "fzstd": "0.1.1",
+    "kiwi-schema": "0.5.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

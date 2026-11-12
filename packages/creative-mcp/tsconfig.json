@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    // A plain Node MCP server, not an Effect program: no Effect language-service rules.
+    "plugins": []
+  },
+  // Typechecked: the media generation and spend code and its tests. The other tool modules
+  // (assemble, finalize, localjobs, project, quality, references, blender tools) predate type
+  // checking in this package and still carry errors; they join this list once fixed.
+  "include": [
+    "src/media/**/*.ts",
+    "src/case/**/*.ts",
+    "src/figma/**/*.ts",
+    "src/home.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": ["src/media/assemble.ts", "src/media/finalize.ts", "src/media/localjobs.ts"]
+}

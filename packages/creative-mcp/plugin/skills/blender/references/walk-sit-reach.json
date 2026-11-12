@@ -1,0 +1,344 @@
+{
+  "schema": "open-herness.scene-plan/1",
+  "source": {
+    "clip": "Mikhail Nilov, 'Man Sitting on a Chair' (Pexels)",
+    "page": "https://www.pexels.com/video/man-sitting-on-a-chair-7778454/",
+    "download": "https://videos.pexels.com/video-files/7778454/7778454-hd_1080_1920_25fps.mp4",
+    "license": "Pexels license https://www.pexels.com/license/",
+    "trim": "source seconds 11-23 (plan time 0 = source 11 s), 12 s",
+    "notes": "Walk to a chair, sit, reach to the table with the left hand. Feet are cropped early and hidden by the table later, so foot paths are authored overrides."
+  },
+  "source_sha256": "062dae7d3b9e22ea35d30457a1df8a8f50b39997ea45795902af4b645c445163",
+  "smoothing": {
+    "sigma_seconds": 0.08,
+    "pole_sigma_seconds": 0.14
+  },
+  "smooth_authored_paths": true,
+  "lean_limit_degrees": 45,
+  "root": [
+    {
+      "time": 0,
+      "position": [-0.75, 1.0, -0.1]
+    },
+    {
+      "time": 1,
+      "position": [-0.75, 0.75, -0.1]
+    },
+    {
+      "time": 2,
+      "position": [-0.75, 0.5, -0.1]
+    },
+    {
+      "time": 3,
+      "position": [-0.75, 0.3, -0.1]
+    },
+    {
+      "time": 5.8,
+      "position": [-0.1324, 0.12, -0.1]
+    },
+    {
+      "time": 6.4,
+      "position": [-0.0, 0, -0.2]
+    },
+    {
+      "time": 7.4,
+      "position": [-0.0, 0, -0.5]
+    },
+    {
+      "time": 12,
+      "position": [-0.0, 0, -0.5]
+    }
+  ],
+  "props": [
+    {
+      "name": "ChairSeat",
+      "position": [0, 0, 0.47],
+      "size": [0.52, 0.5, 0.07]
+    },
+    {
+      "name": "ChairBack",
+      "position": [0, 0.25, 0.8],
+      "size": [0.52, 0.06, 0.65]
+    },
+    {
+      "name": "Table",
+      "position": [0.25, -0.7, 0.8],
+      "size": [1.1, 0.6, 0.08]
+    },
+    {
+      "name": "ChairLeg3",
+      "position": [-0.22, -0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg4",
+      "position": [0.22, -0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg5",
+      "position": [-0.22, 0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "ChairLeg6",
+      "position": [0.22, 0.2, 0.235],
+      "size": [0.05, 0.05, 0.47]
+    },
+    {
+      "name": "TableLeg7",
+      "position": [-0.22, -0.92, 0.38],
+      "size": [0.055, 0.055, 0.76]
+    },
+    {
+      "name": "TableLeg8",
+      "position": [0.72, -0.92, 0.38],
+      "size": [0.055, 0.055, 0.76]
+    },
+    {
+      "name": "TableLeg9",
+      "position": [-0.22, -0.48, 0.38],
+      "size": [0.055, 0.055, 0.76]
+    },
+    {
+      "name": "TableLeg10",
+      "position": [0.72, -0.48, 0.38],
+      "size": [0.055, 0.055, 0.76]
+    }
+  ],
+  "contacts": [
+    {
+      "bone": "hand_ik.L",
+      "start": 8.0,
+      "end": 10.2,
+      "blend": 0.4,
+      "object": "Table",
+      "position": [-0.03, 0.26, 0.11],
+      "rotation": [0, 0, 180]
+    },
+    {
+      "bone": "torso",
+      "object": "ChairSeat",
+      "position": [0, 0.0362, 0.1136],
+      "start": 7.6,
+      "end": 12,
+      "blend": 0.2
+    },
+    {
+      "bone": "foot_ik.L",
+      "position": [-0.62, 0.74, 0.0852],
+      "start": 0.45,
+      "end": 1.0,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.L",
+      "position": [-0.62, 0.35, 0.0852],
+      "start": 1.4,
+      "end": 2.0,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.L",
+      "position": [-0.62, 0.05, 0.0852],
+      "start": 2.45,
+      "end": 3.2,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.L",
+      "position": [-0.3774, -0.1, 0.0852],
+      "start": 4.1,
+      "end": 5.4,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.L",
+      "position": [0.13, -0.4, 0.0852],
+      "start": 6.6,
+      "end": 12,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.R",
+      "position": [-0.88, 0.8, 0.0852],
+      "start": 0,
+      "end": 0.6,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.R",
+      "position": [-0.88, 0.4, 0.0852],
+      "start": 1.05,
+      "end": 1.6,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.R",
+      "position": [-0.88, 0.12, 0.0852],
+      "start": 2.05,
+      "end": 2.7,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.R",
+      "position": [-0.7918, -0.1, 0.0852],
+      "start": 3.4,
+      "end": 4.5,
+      "blend": 0.1
+    },
+    {
+      "bone": "foot_ik.R",
+      "position": [-0.2624, -0.35, 0.0852],
+      "start": 5.8,
+      "end": 12,
+      "blend": 0.1
+    }
+  ],
+  "overrides": [
+    {
+      "bone": "foot_ik.L",
+      "keys": [
+        {
+          "time": 0,
+          "position": [-0.62, 1.0, 0.0852]
+        },
+        {
+          "time": 0.225,
+          "position": [-0.62, 0.87, 0.15]
+        },
+        {
+          "time": 0.45,
+          "position": [-0.62, 0.74, 0.0852]
+        },
+        {
+          "time": 1.0,
+          "position": [-0.62, 0.74, 0.0852]
+        },
+        {
+          "time": 1.2,
+          "position": [-0.62, 0.545, 0.15]
+        },
+        {
+          "time": 1.4,
+          "position": [-0.62, 0.35, 0.0852]
+        },
+        {
+          "time": 2.0,
+          "position": [-0.62, 0.35, 0.0852]
+        },
+        {
+          "time": 2.225,
+          "position": [-0.62, 0.2, 0.15]
+        },
+        {
+          "time": 2.45,
+          "position": [-0.62, 0.05, 0.0852]
+        },
+        {
+          "time": 3.2,
+          "position": [-0.62, 0.05, 0.0852]
+        },
+        {
+          "time": 3.65,
+          "position": [-0.4766, -0.025, 0.15]
+        },
+        {
+          "time": 4.1,
+          "position": [-0.3774, -0.1, 0.0852]
+        },
+        {
+          "time": 5.4,
+          "position": [-0.3774, -0.1, 0.0852]
+        },
+        {
+          "time": 6.0,
+          "position": [0.0418, -0.25, 0.15]
+        },
+        {
+          "time": 6.6,
+          "position": [0.13, -0.4, 0.0852]
+        },
+        {
+          "time": 12,
+          "position": [0.13, -0.4, 0.0852]
+        }
+      ]
+    },
+    {
+      "bone": "foot_ik.R",
+      "keys": [
+        {
+          "time": 0,
+          "position": [-0.88, 0.8, 0.0852]
+        },
+        {
+          "time": 0.6,
+          "position": [-0.88, 0.8, 0.0852]
+        },
+        {
+          "time": 0.825,
+          "position": [-0.88, 0.6, 0.15]
+        },
+        {
+          "time": 1.05,
+          "position": [-0.88, 0.4, 0.0852]
+        },
+        {
+          "time": 1.6,
+          "position": [-0.88, 0.4, 0.0852]
+        },
+        {
+          "time": 1.825,
+          "position": [-0.88, 0.26, 0.15]
+        },
+        {
+          "time": 2.05,
+          "position": [-0.88, 0.12, 0.0852]
+        },
+        {
+          "time": 2.7,
+          "position": [-0.88, 0.12, 0.0852]
+        },
+        {
+          "time": 3.05,
+          "position": [-0.869, 0.01, 0.15]
+        },
+        {
+          "time": 3.4,
+          "position": [-0.7918, -0.1, 0.0852]
+        },
+        {
+          "time": 4.5,
+          "position": [-0.7918, -0.1, 0.0852]
+        },
+        {
+          "time": 5.15,
+          "position": [-0.4057, -0.225, 0.15]
+        },
+        {
+          "time": 5.8,
+          "position": [-0.2624, -0.35, 0.0852]
+        },
+        {
+          "time": 12,
+          "position": [-0.2624, -0.35, 0.0852]
+        }
+      ]
+    }
+  ],
+  "reviewed_occlusions": [
+    {
+      "start": 0,
+      "end": 12,
+      "joints": [25, 26, 27, 28],
+      "reason": "Legs leave the frame early and the table hides them once seated: authored foot paths stand in for the unreliable lower body."
+    },
+    {
+      "start": 6.8,
+      "end": 8.7,
+      "joints": [14, 16],
+      "reason": "The far arm is partly hidden while sitting down; the estimate is kept but flagged for review."
+    }
+  ]
+}

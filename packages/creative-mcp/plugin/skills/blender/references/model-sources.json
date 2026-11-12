@@ -1,0 +1,210 @@
+{
+  "schema": "open-herness.model-sources/1",
+  "checked": "2026-10-30",
+  "how_to_use": "Prefer a licensed real model for a canonical subject. Poly Haven is built into the asset_* tools; for every other source download with the shell into assets/<source>/<id>/, import with blender_exec (bpy.ops.import_scene.gltf / wm.obj_import / wm.stl_import), keep real size, check dimensions against the real object, and add a CREDITS line.",
+  "sources": [
+    {
+      "id": "poly-haven",
+      "name": "Poly Haven",
+      "domains": ["props", "environments", "materials", "hdris"],
+      "license": "CC0",
+      "credit": "Poly Haven (polyhaven.com), CC0",
+      "formats": ["gltf", "blend", "fbx", "jpg", "hdr"],
+      "access": "Built in: asset_search / asset_download / asset_apply_hdri / asset_apply_material / asset_import_model. Public API, no key.",
+      "urls": {
+        "site": "https://polyhaven.com",
+        "api": "https://api.polyhaven.com"
+      },
+      "notes": "Props, scanned textures, HDRIs. API /info/<id>: type 0 = HDRI, 1 = texture, 2 = model. Texture dimensions are in millimetres. Poly Haven asks users to be told the assets come from Poly Haven."
+    },
+    {
+      "id": "ambientcg",
+      "name": "ambientCG",
+      "domains": ["materials"],
+      "license": "CC0",
+      "credit": "ambientCG (ambientcg.com), CC0",
+      "formats": ["jpg", "png"],
+      "access": "Not wrapped: download the material zip yourself (shell/curl), then build the material with blender_exec.",
+      "urls": {
+        "site": "https://ambientcg.com",
+        "api": "https://ambientcg.com/api/v3/assets"
+      },
+      "notes": "PBR materials. Use the NormalGL map, never NormalDX. Dimensions in centimetres (0 = unknown)."
+    },
+    {
+      "id": "z-anatomy",
+      "name": "Z-Anatomy",
+      "domains": ["anatomy"],
+      "license": "CC-BY-SA-4.0",
+      "credit": "Z-Anatomy (CC BY-SA 4.0)",
+      "formats": ["blend", "fbx"],
+      "access": "Direct download from GitHub, no key.",
+      "urls": {
+        "blend": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+        "fbx": "https://raw.githubusercontent.com/LluisV/Z-Anatomy/PC-Version/Resources/Models/FBX/<Name>.fbx"
+      },
+      "notes": "About 2,800 named structures; per-system FBX files (Joints100, SkeletalSystem100, MuscularSystem100). Share-alike applies to redistributed meshes."
+    },
+    {
+      "id": "bodyparts3d",
+      "name": "BodyParts3D (DBCLS)",
+      "domains": ["anatomy"],
+      "license": "CC-BY-4.0",
+      "credit": "BodyParts3D, (c) The Database Center for Life Science, CC BY 4.0",
+      "formats": ["obj"],
+      "access": "Direct download, one OBJ per FMA id.",
+      "urls": {
+        "download": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d",
+        "viewer": "https://lifesciencedb.jp/bp3d"
+      },
+      "notes": "Parts are named by FMA id: look up the structure's id first."
+    },
+    {
+      "id": "nih-3d",
+      "name": "NIH 3D",
+      "domains": ["anatomy", "molecular", "general"],
+      "license": "per model",
+      "credit": "As the model's licence states.",
+      "formats": ["glb", "stl", "x3d"],
+      "access": "Download from the model page.",
+      "urls": {
+        "site": "https://3d.nih.gov"
+      },
+      "notes": "Licences differ per model: read each one."
+    },
+    {
+      "id": "open-anatomy",
+      "name": "Open Anatomy Project",
+      "domains": ["anatomy"],
+      "license": "3D Slicer licence (no share-alike)",
+      "credit": "Open Anatomy Project and the atlas authors.",
+      "formats": ["varies"],
+      "access": "Download from the atlas page.",
+      "urls": {
+        "site": "https://www.openanatomy.org"
+      },
+      "notes": "Includes the SPL knee and brain atlases, with ligaments and cartilage segmented."
+    },
+    {
+      "id": "rcsb-pdb",
+      "name": "RCSB PDB (+ Molecular Nodes add-on)",
+      "domains": ["molecular"],
+      "license": "PDB data CC0; Molecular Nodes add-on GPL (renders unaffected)",
+      "credit": "Cite the PDB entry id.",
+      "formats": ["pdb", "cif"],
+      "access": "Fetch by PDB id directly or with the Molecular Nodes add-on.",
+      "urls": {
+        "site": "https://www.rcsb.org"
+      },
+      "notes": "Protein, nucleic-acid and other molecular structures."
+    },
+    {
+      "id": "kenney",
+      "name": "Kenney",
+      "domains": ["game-packs", "props", "2d", "ui", "audio", "textures"],
+      "license": "CC0",
+      "credit": "Kenney (kenney.nl), CC0",
+      "formats": ["zip"],
+      "access": "No API; download the official pack zip from the listing.",
+      "urls": {
+        "site": "https://kenney.nl/assets"
+      },
+      "notes": "Whole packs; each zip contains License.txt."
+    },
+    {
+      "id": "game-icons",
+      "name": "game-icons.net",
+      "domains": ["icons"],
+      "license": "CC-BY-3.0 (a few authors CC0)",
+      "credit": "Icons made by <author>. Available on https://game-icons.net",
+      "formats": ["svg"],
+      "access": "SVGs from the game-icons/icons repository.",
+      "urls": {
+        "site": "https://game-icons.net",
+        "repo": "https://github.com/game-icons/icons"
+      },
+      "notes": "Credit each icon's author (its folder). Each SVG is a black square path under a white icon path: recolour or drop via fill."
+    },
+    {
+      "id": "incompetech",
+      "name": "Incompetech (Kevin MacLeod)",
+      "domains": ["music"],
+      "license": "CC-BY-4.0",
+      "credit": "\"<title>\" Kevin MacLeod (incompetech.com), licensed under Creative Commons: By Attribution 4.0, http://creativecommons.org/licenses/by/4.0/",
+      "formats": ["mp3"],
+      "access": "Public catalogue, one track per download.",
+      "urls": {
+        "site": "https://incompetech.com/music/royalty-free/",
+        "catalogue": "https://incompetech.com/music/royalty-free/pieces.json"
+      },
+      "notes": "About 1,400 tracks; never mirror the catalogue in bulk."
+    },
+    {
+      "id": "smithsonian-3d",
+      "name": "Smithsonian 3D Open Access",
+      "domains": ["museum-objects"],
+      "license": "CC0 for Open Access items",
+      "credit": "Not required for CC0 items.",
+      "formats": ["glb", "gltf", "obj"],
+      "access": "API with a key, or download from the object page.",
+      "urls": {
+        "site": "https://3d.si.edu",
+        "api": "https://api.si.edu"
+      },
+      "notes": "Only items marked Open Access are CC0."
+    },
+    {
+      "id": "nasa-3d",
+      "name": "NASA 3D Resources",
+      "domains": ["spacecraft"],
+      "license": "Free to use; no NASA endorsement implied; NASA brand rules apply",
+      "credit": "NASA",
+      "formats": ["varies"],
+      "access": "Direct download from GitHub.",
+      "urls": {
+        "repo": "https://github.com/nasa/NASA-3D-Resources"
+      },
+      "notes": "Never imply NASA endorses the video or use NASA insignia as branding."
+    },
+    {
+      "id": "freecad-library",
+      "name": "FreeCAD Parts Library",
+      "domains": ["machinery", "mechanical-parts"],
+      "license": "Per part: CC-BY-3.0, credited to that part's author",
+      "credit": "<author>, FreeCAD Parts Library, CC BY 3.0 (author from the part's git history or .FCStd properties)",
+      "formats": ["stl"],
+      "access": "Direct download from GitHub, no key.",
+      "urls": {
+        "repo": "https://github.com/FreeCAD/FreeCAD-library",
+        "stl": "https://raw.githubusercontent.com/FreeCAD/FreeCAD-library/master/<Folder>/<Part>.stl"
+      },
+      "notes": "About 2,500 parts ship an .stl (motors, gears, bearings, pulleys, couplings, a crankshaft, robots); the rest are .FCStd/.step only, which Blender cannot import directly. Parts, not whole machines: assemble mechanisms. URL-encode spaces in folder names. STL is usually millimetres: scale 0.001 and check dimensions."
+    },
+    {
+      "id": "sketchfab",
+      "name": "Sketchfab Download API",
+      "domains": ["general"],
+      "license": "Per model; filter to CC0 or CC-BY (CC-BY-SA fine with credit)",
+      "credit": "As the model's licence states.",
+      "formats": ["gltf", "glb", "usdz"],
+      "access": "Needs the user's Sketchfab API token: ask for it.",
+      "urls": {
+        "site": "https://sketchfab.com"
+      },
+      "notes": "Check each model's licence before downloading."
+    },
+    {
+      "id": "objaverse",
+      "name": "Objaverse",
+      "domains": ["general"],
+      "license": "Per object",
+      "credit": "As the object's licence states.",
+      "formats": ["glb"],
+      "access": "objaverse Python package or the Hugging Face dataset.",
+      "urls": {
+        "dataset": "https://huggingface.co/datasets/allenai/objaverse"
+      },
+      "notes": "Huge and uneven: inspect a candidate before using it."
+    }
+  ]
+}

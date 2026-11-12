@@ -1,0 +1,66 @@
+{
+  "checked": "2026-10-30",
+  "use": "Real-world shots: user's own footage first, then these. Download the file itself, keep its page URL, record licence and credit in sources.json.",
+  "sources": [
+    {
+      "id": "pexels",
+      "name": "Pexels",
+      "good_for": ["everyday", "places", "people", "nature"],
+      "license": "Pexels License — free, commercial use OK, attribution not required",
+      "credit": "Optional; naming the creator and Pexels is welcome.",
+      "formats": ["mp4"],
+      "how": "The search API needs a free key in the Authorization header. Without a key, pick a clip on the website and download its video file.",
+      "urls": {
+        "site": "https://www.pexels.com/videos",
+        "license": "https://www.pexels.com/license/",
+        "api": "https://api.pexels.com/videos/search"
+      },
+      "limits": "No identifiable person shown negatively or as endorsing the user; never as a brand mark; no reselling the clip unchanged."
+    },
+    {
+      "id": "pixabay",
+      "name": "Pixabay",
+      "good_for": ["everyday", "places", "nature"],
+      "license": "Pixabay Content License — free, commercial use and edits OK, attribution not required",
+      "credit": "Not required.",
+      "formats": ["mp4"],
+      "how": "The search API needs a key. Without one, find the clip on the site and download it; never hotlink.",
+      "urls": {
+        "site": "https://pixabay.com/videos/",
+        "license": "https://pixabay.com/service/license-summary/",
+        "api": "https://pixabay.com/api/videos/"
+      },
+      "limits": "Visible brands or trademarks may not be used to sell goods or services; people shown may not be used misleadingly."
+    },
+    {
+      "id": "wikimedia-commons",
+      "name": "Wikimedia Commons",
+      "good_for": ["documentary", "history", "science", "landmarks", "species"],
+      "license": "Varies per file (public domain, CC BY, CC BY-SA, others) — read each file page",
+      "credit": "Whatever the file's licence demands; credit the original author, not the uploader.",
+      "formats": ["webm", "ogv"],
+      "how": "Public MediaWiki API, no key. Send a descriptive User-Agent and make one request at a time.",
+      "urls": {
+        "site": "https://commons.wikimedia.org",
+        "reuse": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+        "api": "https://commons.wikimedia.org/w/api.php"
+      },
+      "limits": "Files are WebM/Ogg — transcode a working copy for the edit. Trademark and personality rights may still cover what is shown."
+    },
+    {
+      "id": "nasa",
+      "name": "NASA Image and Video Library",
+      "good_for": ["space", "earth", "aviation", "science"],
+      "license": "Generally not copyrighted; must not imply NASA endorsement; NASA brand rules apply",
+      "credit": "NASA, or the credit line on the item page.",
+      "formats": ["mp4", "jpg"],
+      "how": "Public search API, no key: search?q=TERM&media_type=video, then the item's asset endpoint lists its files.",
+      "urls": {
+        "site": "https://images.nasa.gov",
+        "guidelines": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+        "api": "https://images-api.nasa.gov"
+      },
+      "limits": "The NASA logo and insignia are not free to use; items marked as third-party copyrighted need the holder's permission."
+    }
+  ]
+}
