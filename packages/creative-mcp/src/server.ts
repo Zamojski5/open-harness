@@ -27,7 +27,7 @@ const server = new McpServer(
   { name: "open-herness-creative", version: "0.1.0" },
   {
     instructions: [
-      "Creative tools from Open Herness for open-source creative apps.",
+      "Creative tools from Open Harness for open-source creative apps.",
       "",
       "Quality goal: when the user states a bar (e.g. 8/10 against references, a deadline, a budget), call goal_set first (spend cap only from the user's own words, or localOnly for free work), then after each version you show call goal_review with the new files and fix its gaps; you are held at the end of a turn until the bar is met or a limit is hit, then report the latest score and what still falls short and close with goal_end.",
       "",

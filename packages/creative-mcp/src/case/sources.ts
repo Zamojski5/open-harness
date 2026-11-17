@@ -39,12 +39,12 @@ export function defaultPaths(env = process.env): SourcePaths {
 
 /**
  * Server databases that may hold the project, most recently written first: OH_STATE_DB, then
- * $T3CODE_HOME (or ~/.t3) userdata/ and dev/, then every ~/.t3/<instance>/userdata (the app's dev
+ * $T3CODE_HOME (or ~/.open-herness/app) userdata/ and dev/, then every <base>/<instance>/userdata (the app's dev
  * and test instances each keep their own; the MCP server is not told which one started it).
  */
 export function stateDbCandidates(env = process.env): string[] {
   if (env.OH_STATE_DB) return [env.OH_STATE_DB];
-  const base = env.T3CODE_HOME || NodePath.join(NodeOS.homedir(), ".t3");
+  const base = env.T3CODE_HOME || NodePath.join(NodeOS.homedir(), ".open-herness", "app");
   const found = ["userdata/statev2.sqlite", "dev/statev2.sqlite"].map((rel) =>
     NodePath.join(base, rel),
   );
@@ -53,7 +53,7 @@ export function stateDbCandidates(env = process.env): string[] {
       for (const d of NodeFS.readdirSync(base, { withFileTypes: true }))
         if (d.isDirectory()) found.push(NodePath.join(base, d.name, "userdata", "statev2.sqlite"));
     } catch {
-      // no ~/.t3
+      // no app data yet
     }
   }
   const mtime = (p: string) => {

@@ -159,7 +159,7 @@ export function openHernessCreativeInstructions(cwd: string | null): string {
   const brief = projectBriefFromAgentsMd(cwd);
   return [
     "<open_herness_environment>",
-    "You are working in Open Herness, a creative studio: pick the best tool for each part of the job from what is installed, and combine apps when that gives a better result. Load the matching skill (outcome skills like make-3d-scene, make-motion-graphics, make-trailer, make-image; app skills like blender, effectcraft; choose-tool when unsure which app fits; quality-loop for every visual result) before starting creative work.",
+    "You are working in Open Harness, a creative studio: pick the best tool for each part of the job from what is installed, and combine apps when that gives a better result. Load the matching skill (outcome skills like make-3d-scene, make-motion-graphics, make-trailer, make-image; app skills like blender, effectcraft; choose-tool when unsure which app fits; quality-loop for every visual result) before starting creative work.",
     `Installed creative apps: ${apps.map(([name, use]) => `${name} (${use})`).join("; ") || "none detected"}.`,
     `Command-line tools: ${clis.map(([bin, use]) => `${bin} (${use})`).join("; ") || "none"}.`,
     `Not installed (offer to install if clearly better for the task, never silently): ${missing.join(", ") || "-"}.`,

@@ -726,11 +726,15 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         }).pipe(Effect.scoped),
       );
 
-      it.effect("seeds a worktree database from ~/.t3 only when it has none", () =>
+      it.effect("seeds a worktree database from the app home only when asked and it has none", () =>
         Effect.gen(function* () {
           const path = yield* Path.Path;
           const root = yield* makeWorktree;
           const home = path.join(root, "home");
+          const appUserdata = path.join(home, ".open-herness", "app", "userdata");
+          NodeFS.mkdirSync(appUserdata, { recursive: true });
+          NodeFS.writeFileSync(path.join(appUserdata, "statev2.sqlite"), "");
+          // T3 Code's own database is never a seed source.
           NodeFS.mkdirSync(path.join(home, ".t3", "userdata"), { recursive: true });
           NodeFS.writeFileSync(path.join(home, ".t3", "userdata", "statev2.sqlite"), "");
 
@@ -759,15 +763,17 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             });
 
           assert.deepStrictEqual(yield* spawnedArgs(false), []);
-          const [seedArgs] = yield* spawnedArgs(undefined);
+          assert.deepStrictEqual(yield* spawnedArgs(undefined), []);
+          const [seedArgs] = yield* spawnedArgs(true);
           assert.includeMembers([...(seedArgs ?? [])], ["--base-dir", path.join(root, ".t3")]);
+          assert.includeMembers([...(seedArgs ?? [])], [path.join(appUserdata, "statev2.sqlite")]);
 
           // Either database means the worktree already has data.
           for (const name of ["state.sqlite", "statev2.sqlite"]) {
             const file = path.join(root, ".t3", "userdata", name);
             NodeFS.mkdirSync(path.dirname(file), { recursive: true });
             NodeFS.writeFileSync(file, "");
-            assert.deepStrictEqual(yield* spawnedArgs(undefined), []);
+            assert.deepStrictEqual(yield* spawnedArgs(true), []);
             NodeFS.rmSync(file);
           }
         }).pipe(Effect.scoped),
@@ -785,7 +791,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             const path = yield* Path.Path;
             const root = yield* makeWorktree;
             const home = path.join(root, "home");
-            const source = path.join(home, ".t3", "userdata", "statev2.sqlite");
+            const source = path.join(home, ".open-herness", "app", "userdata", "statev2.sqlite");
             NodeFS.mkdirSync(path.dirname(source), { recursive: true });
             NodeFS.writeFileSync(source, "");
             const spawned: Array<ReadonlyArray<string>> = [];
@@ -798,7 +804,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
               }),
             );
 
-            yield* runDevRunnerWithInput({ ...devServerInput, t3Home: undefined }).pipe(
+            yield* runDevRunnerWithInput({ ...devServerInput, t3Home: undefined, seed: true }).pipe(
               Effect.provide([
                 emptyConfigLayer,
                 netServiceLayer,

@@ -4,6 +4,9 @@
 import * as NodeFSP from "node:fs/promises";
 import * as NodeCrypto from "node:crypto";
 import * as NodeModule from "node:module";
+import * as NodeChildProcess from "node:child_process";
+import * as NodeFS from "node:fs";
+import * as NodePath from "node:path";
 // plist is CommonJS; Node cannot load its named exports from an ES module.
 import Plist from "plist";
 
@@ -988,6 +991,8 @@ export const DESKTOP_FILE_EXCLUSIONS = [
   "!**/node_modules/@cursor/sdk-*/**/*",
   "!apps/desktop/prod-resources/cursor-sdk",
   "!apps/desktop/prod-resources/cursor-sdk/**/*",
+  "!apps/desktop/prod-resources/creative-mcp",
+  "!apps/desktop/prod-resources/creative-mcp/**/*",
   // The installed Claude CLI is supplied explicitly; exclude optional bundled executables, retaining SDK JavaScript.
   "!**/node_modules/@anthropic-ai/claude-agent-sdk-*/**/*",
   "!**/*.map",
@@ -1097,6 +1102,12 @@ export const DESKTOP_EXTRA_RESOURCES = [
   {
     from: "apps/desktop/prod-resources/resource-monitor",
     to: "resource-monitor",
+  },
+  // Open Harness: the creative MCP server and skills, found by the server walking up to
+  // Resources/packages/creative-mcp and run as TypeScript by Electron's own Node.
+  {
+    from: "apps/desktop/prod-resources/creative-mcp",
+    to: "packages/creative-mcp",
   },
 ] as const;
 export const LINUX_CAPTURE_EXTRA_RESOURCES = [
@@ -1443,6 +1454,67 @@ export function resolveMergedStageDependencies(input: {
 }
 
 /** Cursor's helper lookup falls through the archive to this real resources tree. */
+export class CreativeMcpStagingError extends Schema.TaggedError<CreativeMcpStagingError>()(
+  "CreativeMcpStagingError",
+  {
+    targetDir: Schema.String,
+    cause: Schema.Defect(),
+  },
+) {
+  override get message(): string {
+    return `Could not stage the creative MCP package into ${this.targetDir}: ${String(this.cause)}`;
+  }
+}
+
+/** Production manifest for the staged creative MCP package: no dev dependencies, no scripts. */
+function creativeMcpProductionManifest(source: string): string {
+  const {
+    devDependencies: _dev,
+    scripts: _scripts,
+    ...manifest
+  } = JSON.parse(source) as Record<string, unknown>;
+  return `${JSON.stringify(manifest, null, 2)}\n`;
+}
+
+function installCreativeMcpDependencies(targetDir: string): void {
+  const npm = NodePath.join(NodePath.dirname(process.execPath), "npm");
+  NodeChildProcess.execFileSync(
+    npm,
+    ["install", "--omit=dev", "--no-package-lock", "--no-audit", "--no-fund"],
+    { cwd: targetDir, stdio: "inherit" },
+  );
+}
+
+/**
+ * Open Harness: copies packages/creative-mcp (sources, plugin skills, licence) into the staged
+ * resources with its production dependencies installed by npm, so the packaged app can run the
+ * creative MCP server without the monorepo.
+ */
+export const stageCreativeMcpPackage = Effect.fn("stageCreativeMcpPackage")(function* (
+  repoRoot: string,
+  targetDir: string,
+) {
+  const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
+  const source = path.join(repoRoot, "packages/creative-mcp");
+  yield* fs.remove(targetDir, { recursive: true, force: true });
+  yield* fs.makeDirectory(targetDir, { recursive: true });
+  for (const entry of ["src", "plugin", "LICENSE.deepseek-harness"]) {
+    yield* fs.copy(path.join(source, entry), path.join(targetDir, entry));
+  }
+  const manifestSource = yield* fs.readFileString(path.join(source, "package.json"));
+  yield* Effect.try({
+    try: () => {
+      NodeFS.writeFileSync(
+        path.join(targetDir, "package.json"),
+        creativeMcpProductionManifest(manifestSource),
+      );
+      installCreativeMcpDependencies(targetDir);
+    },
+    catch: (cause) => new CreativeMcpStagingError({ targetDir, cause }),
+  });
+});
+
 export const stageCursorSdkPlatformPackages = Effect.fn("stageCursorSdkPlatformPackages")(
   function* (nodeModulesDir: string, destination: string) {
     const fs = yield* FileSystem.FileSystem;
@@ -2758,8 +2830,8 @@ export function resolvePackageManagerUserAgent(packageManager: string): string {
 
 export function resolveDesktopProductName(version: string): string {
   return resolveDesktopUpdateChannel(version) === "nightly"
-    ? "T3 Code (Nightly)"
-    : (desktopPackageJson.productName ?? "Open Herness");
+    ? "Open Harness (Nightly)"
+    : (desktopPackageJson.productName ?? "Open Harness");
 }
 
 export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
@@ -2782,7 +2854,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
     afterPack: (yield* Path.Path).join(yield* RepoRoot, "scripts/prepare-server-compile-cache.cjs"),
     appId: DESKTOP_APP_ID,
     productName: resolveDesktopProductName(version),
-    artifactName: "T3-Code-${version}-${arch}.${ext}",
+    artifactName: "Open-Harness-${version}-${arch}.${ext}",
     electronLanguages: [...DESKTOP_ELECTRON_LANGUAGES],
     files: [
       ...DESKTOP_FILE_EXCLUSIONS,
@@ -3952,6 +4024,7 @@ const buildDesktopArtifactUnlocked = Effect.fn("buildDesktopArtifactUnlocked")(f
     ),
     path.join(stageProdResourcesDir, "cursor-sdk"),
   );
+  yield* stageCreativeMcpPackage(repoRoot, path.join(stageProdResourcesDir, "creative-mcp"));
   if (
     options.wslRuntime !== undefined &&
     bundlesWslRuntime({ platform: options.platform, runtimeArchivePath: options.wslRuntime })

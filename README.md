@@ -8,7 +8,7 @@
 
 <sub>Concept launch film (2× speed). The brand "oto" is fictional and the app window is a recreation for the edit; the timings in the copy are not measurements.</sub>
 
-[Website](https://open-harness-lime.vercel.app/) · [How the quality loop works](#the-quality-loop) · [Quick start](#quick-start) · [Status](#status)
+[Website](https://open-harness-lime.vercel.app/) · [How the quality loop works](#the-quality-loop) · [Download](#download) · [Status](#status)
 
 </div>
 
@@ -53,13 +53,13 @@ The working method sits in the `quality-loop` skill: references and a written br
 
 ## Spend control
 
-| Mechanism | What it does |
-| --- | --- |
-| `media_estimate` / `media_quote_plan` | Prices a request or a whole plan per provider route before anything runs. |
-| Budget hook | A paid generation is refused unless the spend cap was taken from the user's own words. |
-| Drafts → finish | 2–4 cheap drafts for subjective choices, then `media_finish_draft` / `media_upscale` only for the keeper. |
-| Provider routing | The same model can run on several providers (fal, Runware, Replicate); the cheapest route that can carry the request is offered. |
-| Ledger | Each generation is logged with its cost, so the thread knows what it has spent. |
+| Mechanism                             | What it does                                                                                                                     |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `media_estimate` / `media_quote_plan` | Prices a request or a whole plan per provider route before anything runs.                                                        |
+| Budget hook                           | A paid generation is refused unless the spend cap was taken from the user's own words.                                           |
+| Drafts → finish                       | 2–4 cheap drafts for subjective choices, then `media_finish_draft` / `media_upscale` only for the keeper.                        |
+| Provider routing                      | The same model can run on several providers (fal, Runware, Replicate); the cheapest route that can carry the request is offered. |
+| Ledger                                | Each generation is logged with its cost, so the thread knows what it has spent.                                                  |
 
 Worked example, calculated from the providers' published prices rather than measured on an invoice: a 10 s, 1080p Seedance 2.5 shot with 4 versions to choose from costs **$46.56** when every version is rendered at 1080p on fal, and **$10.19** when the harness routes the job to the cheapest provider (Runware), makes 4 drafts and finishes only the chosen one at 1080p. That is 78% less. Drafts alone, staying on fal, would bring it to $20.46; routing does the rest. The fal draft price is our assumption and Runware's finish price is derived from its published token rate (see `packages/creative-mcp/src/media/catalog.ts`).
 
@@ -88,26 +88,43 @@ After `pnpm install`, the creative MCP server also works with Claude Code in a p
 claude mcp add open-harness -- node <repo>/packages/creative-mcp/src/server.ts
 ```
 
-## Quick start
+## Download
 
-Requirements: macOS, Node 26.12.1 (exact version), pnpm 12.14, [Claude Code](https://claude.com/product/claude-code) installed and logged in (`claude auth login`). Blender and ffmpeg are optional, but most creative skills use them.
+Version 0.1.0 for Apple Silicon Macs is on the [Releases](https://github.com/Zamojski5/open-harness/releases) page. You also need [Claude Code](https://claude.com/product/claude-code) installed and logged in (`claude auth login`). Blender and ffmpeg are optional, but most creative skills use them.
+
+The app is not signed with an Apple Developer ID yet, so macOS blocks the first launch. After the first attempt, open **System Settings → Privacy & Security**, scroll to the message about Open Harness and click **Open Anyway**. If macOS says the app is damaged, run `xattr -dr com.apple.quarantine "/Applications/Open Harness.app"` once.
+
+Open Harness keeps its own data in `~/.open-herness` (the app database under `~/.open-herness/app`). It never reads or changes data from T3 Code, so both apps can be installed side by side.
+
+## Build from source
+
+Requirements: macOS, Node 26.12.1 (exact version), pnpm 12.14, Claude Code installed and logged in.
 
 ```bash
 pnpm install
 pnpm dev:desktop
 ```
 
+Building the DMG also needs Xcode command-line tools and Rust (`rustup target add aarch64-apple-darwin`):
+
+```bash
+pnpm dist:desktop:dmg:arm64 -- --build-version 0.1.0
+```
+
 Provider keys (fal, OpenAI, Google, ElevenLabs, Runware, Replicate) are asked for inside the app the first time a tool needs one. They are kept on your machine.
+
+## Contributing
+
+Work happens on branches and pull requests into `main`; see [CONTRIBUTING.md](CONTRIBUTING.md). Rules for coding agents are in [AGENTS.md](AGENTS.md).
 
 ## Status
 
-**Pre-release, personal fork, macOS only.** It is used for the author's own production work. Known gaps:
+**0.1.0, pre-release, macOS (Apple Silicon) only.** Known gaps:
 
-- The code and app name still say "Open Herness" in places; the product name is Open Harness.
+- Some code identifiers still say "Open Herness"; the product name is Open Harness.
 - Figma support has not yet been tested on a real `.fig` file.
 - A long reviewer call can still leave a turn hanging, and the spend ledger can under-count multi-image jobs. Both are on the fix list.
-
-Tests at the 2026-11-09 integration: typecheck 41/41 packages, creative MCP 139 vitest + 31 node:test passing, server suite 6635 passing with 9 known environment-specific failures.
+- Settings and a few screens inherited from T3 Code still mention T3 Code.
 
 ## Built on T3 Code
 
