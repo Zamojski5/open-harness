@@ -90,26 +90,23 @@ claude mcp add open-harness -- node <repo>/packages/creative-mcp/src/server.ts
 
 ## Download
 
-Version 0.1.0 for Apple Silicon Macs is on the [Releases](https://github.com/Zamojski5/open-harness/releases) page. You also need [Claude Code](https://claude.com/product/claude-code) installed and logged in (`claude auth login`). Blender and ffmpeg are optional, but most creative skills use them.
+Version 0.1.0 is on the [Releases](https://github.com/Zamojski5/open-harness/releases) page: a DMG for Apple Silicon Macs and an AppImage for x64 Linux. You also need [Claude Code](https://claude.com/product/claude-code) installed and logged in (`claude auth login`). Blender and ffmpeg are optional, but most creative skills use them.
 
-The app is not signed with an Apple Developer ID yet, so macOS blocks the first launch. After the first attempt, open **System Settings → Privacy & Security**, scroll to the message about Open Harness and click **Open Anyway**. If macOS says the app is damaged, run `xattr -dr com.apple.quarantine "/Applications/Open Harness.app"` once.
+- **macOS:** the app is not signed with an Apple Developer ID yet, so macOS blocks the first launch. After the first attempt, open **System Settings → Privacy & Security**, scroll to the message about Open Harness and click **Open Anyway**. If macOS says the app is damaged, run `xattr -dr com.apple.quarantine "/Applications/Open Harness.app"` once.
+- **Linux:** `chmod +x Open-Harness-*.AppImage` and run it. Some creative tools are macOS-only for now (app detection uses macOS install paths, image OCR uses the macOS Vision framework). The Linux build has not been tested on a real machine yet; please report what breaks.
 
 Open Harness keeps its own data in `~/.open-herness` (the app database under `~/.open-herness/app`). It never reads or changes data from T3 Code, so both apps can be installed side by side.
 
 ## Build from source
 
-Requirements: macOS, Node 26.12.1 (exact version), pnpm 12.14, Claude Code installed and logged in.
+Requirements: macOS or Linux, Node 26.12.1 (exact version), pnpm 12.14, Claude Code installed and logged in. On Linux also `libsecret-1-dev` and `pkg-config`.
 
 ```bash
 pnpm install
 pnpm dev:desktop
 ```
 
-Building the DMG also needs Xcode command-line tools and Rust (`rustup target add aarch64-apple-darwin`):
-
-```bash
-pnpm dist:desktop:dmg:arm64 -- --build-version 0.1.0
-```
+Release builds come from the `Release` GitHub workflow: push a tag such as `v0.1.0` and it attaches a Linux AppImage and a macOS DMG to a draft release. Building locally needs Rust as well (`pnpm dist:desktop:dmg:arm64` or `pnpm dist:desktop:linux`, each with `-- --build-version <version>`).
 
 Provider keys (fal, OpenAI, Google, ElevenLabs, Runware, Replicate) are asked for inside the app the first time a tool needs one. They are kept on your machine.
 
@@ -119,7 +116,7 @@ Work happens on branches and pull requests into `main`; see [CONTRIBUTING.md](CO
 
 ## Status
 
-**0.1.0, pre-release, macOS (Apple Silicon) only.** Known gaps:
+**0.1.0, pre-release, macOS (Apple Silicon) and Linux (x64).** Known gaps:
 
 - Some code identifiers still say "Open Herness"; the product name is Open Harness.
 - Figma support has not yet been tested on a real `.fig` file.

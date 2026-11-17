@@ -1,0 +1,112 @@
+name: Release
+
+# Builds the desktop app for Linux (AppImage, x64) and macOS (DMG, Apple Silicon)
+# and attaches both to a draft GitHub release. Builds are unsigned.
+# Start it by pushing a tag like v0.1.0, or by hand from the Actions tab.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to build, without the leading v (e.g. 0.1.0)
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            runner: ubuntu-24.04
+            target: AppImage
+            arch: x64
+            rust_target: x86_64-unknown-linux-gnu
+          - platform: mac
+            runner: macos-15
+            target: dmg
+            arch: arm64
+            rust_target: aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          version="${INPUT_VERSION:-${GITHUB_REF_NAME#v}}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Not a version: $version"
+            exit 1
+          fi
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/setup-ci-deps
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          toolchain: stable
+          targets: ${{ matrix.rust_target }}
+
+      - name: Install Linux build libraries
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsecret-1-dev pkg-config imagemagick
+
+      - name: Build
+        shell: bash
+        run: |
+          node scripts/build-desktop-artifact.ts \
+            --platform "${{ matrix.platform }}" \
+            --target "${{ matrix.target }}" \
+            --arch "${{ matrix.arch }}" \
+            --build-version "${{ steps.version.outputs.value }}" \
+            --verbose
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: open-harness-${{ matrix.platform }}
+          path: |
+            release/*.AppImage
+            release/*.dmg
+          if-no-files-found: error
+
+  release:
+    name: Draft release
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          version="${INPUT_VERSION:-${GITHUB_REF_NAME#v}}"
+          gh release create "v$version" dist/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Open Harness $version" \
+            --notes "Unsigned pre-release builds: Linux AppImage (x64) and macOS DMG (Apple Silicon). Install notes are in the README." \
+            --draft --prerelease

@@ -42,7 +42,7 @@ This file is for coding agents working on this repository. `CLAUDE.md` imports i
 
 ## Building a release
 
-- `pnpm dist:desktop:dmg:arm64 -- --build-version <x.y.z>` builds an unsigned DMG into `release/`. The creative MCP package is staged into `Contents/Resources/packages/creative-mcp` with its production dependencies.
+- Releases: push a tag `v<x.y.z>`; the `Release` workflow builds an unsigned Linux AppImage and macOS DMG and attaches them to a draft release. Locally: `pnpm dist:desktop:dmg:arm64` or `pnpm dist:desktop:linux` with `-- --build-version <x.y.z>` (needs Rust). The creative MCP package is staged into `Contents/Resources/packages/creative-mcp` with its production dependencies.
 - The app has no update feed unless `T3CODE_DESKTOP_UPDATE_REPOSITORY` is set at build time.
 
 ## Pull requests
